@@ -1,11 +1,11 @@
 package com.url.shortner.models;
 
 import jakarta.persistence.*;
-import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Entity
 public class UrlMapping {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
