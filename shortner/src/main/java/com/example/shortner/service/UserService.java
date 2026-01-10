@@ -5,7 +5,7 @@ import com.example.shortner.models.User;
 import com.example.shortner.repository.UserRepository;
 import com.example.shortner.security.JwtAuthenticationResponse;
 import com.example.shortner.security.JwtUtils;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,12 +16,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
-@AllArgsConstructor
 public class UserService {
 
-    private final PasswordEncoder passwordEncoder ;
-    private final UserRepository userRepository ;
+    @Autowired
+    private PasswordEncoder passwordEncoder ;
+
+    @Autowired
+    private UserRepository userRepository ;
+
+    @Autowired
     private AuthenticationManager authenticationManager ;
+
+    @Autowired
     private JwtUtils jwtUtils ;
 
     public User registerUser(User user ){

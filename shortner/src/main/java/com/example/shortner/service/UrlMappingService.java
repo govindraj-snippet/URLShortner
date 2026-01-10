@@ -94,6 +94,14 @@ public class UrlMappingService {
 
     public UrlMapping getUrlOriginalUrl(String shortUrl) {
         UrlMapping urlMapping = urlMappingRepository.findByShortUrl(shortUrl) ;
+        if(urlMapping != null ){
+            urlMapping.setClickCount(urlMapping.getClickCount() + 1 ) ;
+            urlMappingRepository.save(urlMapping) ;
+
+            ClickEvent clickEvent = new ClickEvent() ;
+            clickEvent.setClickDate(LocalDateTime.now()) ;
+            clickEventRepository.save(clickEvent) ;
+        }
         return urlMapping ;
     }
 }
