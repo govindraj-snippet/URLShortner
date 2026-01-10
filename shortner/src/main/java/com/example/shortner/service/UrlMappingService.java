@@ -8,6 +8,8 @@ import com.example.shortner.models.User;
 import com.example.shortner.repository.ClickEventRepository;
 import com.example.shortner.repository.UrlMappingRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -88,5 +90,10 @@ public class UrlMappingService {
 
 
 
+    }
+
+    public UrlMapping getUrlOriginalUrl(String shortUrl) {
+        UrlMapping urlMapping = urlMappingRepository.findByShortUrl(shortUrl) ;
+        return urlMapping ;
     }
 }
