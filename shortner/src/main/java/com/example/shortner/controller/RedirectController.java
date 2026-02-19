@@ -1,6 +1,5 @@
 package com.example.shortner.controller;
 
-
 import com.example.shortner.models.UrlMapping;
 import com.example.shortner.service.UrlMappingService;
 import lombok.AllArgsConstructor;
@@ -15,18 +14,22 @@ import org.springframework.http.ResponseEntity;
 @AllArgsConstructor
 public class RedirectController {
 
-    private UrlMappingService urlMappingService ;
+    private UrlMappingService urlMappingService;
+
     @GetMapping("/{shortUrl}")
-    public ResponseEntity<Void> redirect(@PathVariable String shortUrl ){
+    public ResponseEntity<Void> redirect(@PathVariable String shortUrl) {
         UrlMapping urlMapping = urlMappingService.getUrlOriginalUrl(shortUrl);
 
-        if(urlMapping != null ){
+        if (urlMapping != null) {
+            String originalUrl = urlMapping.getOriginalUrl();
+            if (!originalUrl.startsWith("http://") && !originalUrl.startsWith("https://")) {
+                originalUrl = "https://" + originalUrl;
+            }
             HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.add("Location", urlMapping.getOriginalUrl());
-            return ResponseEntity.status(302).headers(httpHeaders).build() ;
-        }
-        else{
-            return ResponseEntity.notFound().build() ;
+            httpHeaders.add("Location", originalUrl);
+            return ResponseEntity.status(302).headers(httpHeaders).build();
+        } else {
+            return ResponseEntity.notFound().build();
         }
 
     }

@@ -19,36 +19,39 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class UserService {
 
     @Autowired
-    private PasswordEncoder passwordEncoder ;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private UserRepository userRepository ;
+    private UserRepository userRepository;
 
     @Autowired
-    private AuthenticationManager authenticationManager ;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    private JwtUtils jwtUtils ;
+    private JwtUtils jwtUtils;
 
-    public User registerUser(User user ){
+    public User registerUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user) ;
+        return userRepository.save(user);
     }
-    public JwtAuthenticationResponse authenticate ( @RequestBody LoginRequest loginRequest){
-      //  return null  ;
+
+    public JwtAuthenticationResponse authenticate(@RequestBody LoginRequest loginRequest) {
+        // return null ;
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername() , loginRequest.getPassword())
-        );
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal() ;
-        String jwt = jwtUtils.generateToken(userDetails ) ;
-        return new JwtAuthenticationResponse(jwt) ;
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        String jwt = jwtUtils.generateToken(userDetails);
+        return new JwtAuthenticationResponse(jwt);
 
     }
 
     public User findByUsername(String name) {
         return userRepository.findByUsername(name).orElseThrow(
-                ()  -> new UsernameNotFoundException("User not Found with username " + name )
-        );
+                () -> new UsernameNotFoundException("User not Found with username " + name));
+    }
+
+    public Boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
     }
 }
