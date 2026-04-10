@@ -1,0 +1,9 @@
+# Ignore env files
+.env
+.env.*
+
+# Ignore frontend dependencies
+node_modules/
+
+# Ignore backend compiled output
+target/
